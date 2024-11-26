@@ -41,9 +41,6 @@ function ResponsiveAppBar() {
     console.log("Search query:", searchQuery);
   };
 
-  const toggleDrawer = (newOpen: boolean) => () => {
-    setOpenDrawer(newOpen);
-  };
   return (
     <AppBar
       position="fixed"
