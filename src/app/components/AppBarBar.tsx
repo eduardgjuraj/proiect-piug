@@ -21,7 +21,6 @@ const pages = [
 function ResponsiveAppBar() {
 
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [openDrawer, setOpenDrawer] = React.useState(false); // Drawer state for mobile
   const [searchQuery, setSearchQuery] = React.useState(""); // Search query
 
   const handleOpenDialog = () => {
