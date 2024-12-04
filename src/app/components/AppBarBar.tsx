@@ -19,6 +19,11 @@ import {
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import { usePathname } from "next/navigation";
 
+interface ResponsiveAppBarProps {
+  isDarkMode: boolean;
+  toggleTheme: () => void;
+}
+
 const pages = [
   { name: "Home", path: "/" },
   { name: "Products", path: "/products" },
@@ -27,7 +32,7 @@ const pages = [
   { name: "Account", path: "/account" },
 ];
 
-function ResponsiveAppBar({ isDarkMode, toggleTheme }: any) {
+function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
   const pathname = usePathname(); // Get the current pathname
   const [openDialog, setOpenDialog] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState(""); // Search query

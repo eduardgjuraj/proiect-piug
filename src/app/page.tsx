@@ -51,7 +51,7 @@ const products = [
   },
 ];
 
-export default function Home({ Component, pageProps }: any) {
+export default function Home() {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
