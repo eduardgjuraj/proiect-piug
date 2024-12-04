@@ -1,14 +1,23 @@
+"use client";
+
 import * as React from "react";
-import { AppBar, Toolbar, Box, Button, IconButton, Container } from "@mui/material";
-import AdbIcon from "@mui/icons-material/Adb";
-import Link from "next/link";
+import {
+  AppBar,
+  Toolbar,
+  Box,
+  Button,
+  IconButton,
+  Container,
+  TextField,
+  Typography,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  Switch,
+} from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
-import TextField from "@mui/material/TextField"; // Search bar
-import Typography from "@mui/material/Typography";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogTitle from "@mui/material/DialogTitle";
+import { usePathname } from "next/navigation";
 
 const pages = [
   { name: "Home", path: "/" },
@@ -18,8 +27,8 @@ const pages = [
   { name: "Account", path: "/account" },
 ];
 
-function ResponsiveAppBar() {
-
+function ResponsiveAppBar({ isDarkMode, toggleTheme }: any) {
+  const pathname = usePathname(); // Get the current pathname
   const [openDialog, setOpenDialog] = React.useState(false);
   const [searchQuery, setSearchQuery] = React.useState(""); // Search query
 
@@ -44,41 +53,61 @@ function ResponsiveAppBar() {
     <AppBar
       position="fixed"
       sx={{
-        bgcolor: "rgba(0, 0, 0, 0.8)", // Dark transparent background
-        boxShadow: 0, // No shadow
-        borderRadius: "8px", // Rounded corners
-        backdropFilter: "blur(8px)", // Blur effect
+        bgcolor: isDarkMode ? "rgba(0, 0, 0, 0.8)" : "rgba(255, 255, 255, 0.8)",
+        color: isDarkMode ? "white" : "black",
+        boxShadow: 1,
+        borderRadius: "1px",
+        backdropFilter: "blur(8px)",
+        height: "56px",
+        marginTop: "10px",
       }}
     >
       <Container maxWidth="lg">
-        <Toolbar sx={{ display: "flex", justifyContent: "space-between", padding: "0 16px" }}>
+        <Toolbar
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            padding: "0 8px",
+            minHeight: "56px",
+          }}
+        >
+          {/* Logo */}
           <Box sx={{ display: "flex", alignItems: "center" }}>
-            <AdbIcon sx={{ mr: 2, color: "white" }} />
-            <Link href="#" passHref>
-              <Button sx={{ color: "white", fontWeight: "bold" }}>EG</Button>
-            </Link>
+            <Button
+              sx={{ color: isDarkMode ? "white" : "black", fontWeight: "bold" }}
+              href="/"
+            >
+              EG
+            </Button>
           </Box>
 
+          {/* Navigation Buttons */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
             {pages.map((page) => (
-              <Link key={page.name} href={page.path} passHref>
-                <Button
-                  sx={{
-                    color: "white",
-                    textTransform: "none", // Disable text transformation
-                    "&:hover": {
-                      color: "#ff4081", // On hover color
-                    },
-                  }}
-                >
-                  {page.name}
-                </Button>
-              </Link>
+              <Button
+                key={page.name}
+                href={page.path}
+                sx={{
+                  color:
+                    pathname === page.path
+                      ? "#ff4081"
+                      : isDarkMode
+                      ? "white"
+                      : "black",
+                  fontWeight: pathname === page.path ? "bold" : "normal",
+                  textTransform: "none",
+                  "&:hover": {
+                    color: "#ff4081",
+                  },
+                }}
+              >
+                {page.name}
+              </Button>
             ))}
           </Box>
 
-           {/* Search Bar */}
-           <Box sx={{ flexGrow: 0 }}>
+          {/* Search Bar */}
+          <Box sx={{ flexGrow: 0 }}>
             <form onSubmit={handleSearchSubmit}>
               <TextField
                 value={searchQuery}
@@ -87,7 +116,7 @@ function ResponsiveAppBar() {
                 variant="outlined"
                 size="small"
                 sx={{
-                  backgroundColor: "white",
+                  backgroundColor: isDarkMode ? "#444" : "white",
                   borderRadius: "4px",
                   marginLeft: "8px",
                   width: "200px",
@@ -100,34 +129,51 @@ function ResponsiveAppBar() {
             </form>
           </Box>
 
-           {/* Help Icon Button */}
-           <IconButton color="inherit" onClick={handleOpenDialog}>
+          {/* Theme Switch */}
+          <Box>
+            <Typography
+              variant="body2"
+              sx={{ color: isDarkMode ? "white" : "black", marginRight: 1 }}
+            >
+              {isDarkMode ? "Dark" : "Light"} Mode
+            </Typography>
+            <Switch checked={isDarkMode} onChange={toggleTheme} />
+          </Box>
+
+          {/* Help Icon Button */}
+          <IconButton
+            sx={{ color: isDarkMode ? "white" : "black" }}
+            onClick={handleOpenDialog}
+          >
             <HelpOutlineIcon />
           </IconButton>
-
         </Toolbar>
       </Container>
 
-       {/* Dialog (Custom Alert) */}
-       <Dialog open={openDialog} onClose={handleCloseDialog}>
+      {/* Dialog (Custom Alert) */}
+      <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Help</DialogTitle>
         <DialogContent>
-          <Typography variant="body1">
-            <Typography> Here is some helpful information about the site and how to use it.</Typography>
-            <Typography> <b>Home </b> → This is the main page!</Typography>
-            <Typography> <b>Products</b> → Here is where you buy products!</Typography>
-            <Typography> <b>Contact</b> → Here you can contact us!</Typography>
-            <Typography> <b>Account</b> → Here you can change details about your account!</Typography>
-            <Typography> <b>Wishlist</b> → Here are the items on your wishlist!</Typography>
+          <Typography variant="body1" component="div">
+            Here is some helpful information about the site and how to use it.
+            <br />
+            <b>Home </b> → This is the main page! <br />
+            <b>Products</b> → Here is where you buy products! <br />
+            <b>Contact</b> → Here you can contact us! <br />
+            <b>Account</b> → Here you can change details about your account!{" "}
+            <br />
+            <b>Wishlist</b> → Here are the items on your wishlist! <br />
           </Typography>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseDialog} color="primary">
+          <Button
+            sx={{ color: isDarkMode ? "white" : "black" }}
+            onClick={handleCloseDialog}
+          >
             Close
           </Button>
         </DialogActions>
       </Dialog>
-
     </AppBar>
   );
 }

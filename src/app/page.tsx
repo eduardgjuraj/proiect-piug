@@ -1,47 +1,64 @@
 "use client";
 
-import React, { useEffect, useState } from 'react';
-import { Box, Typography, Button, Container, Paper } from '@mui/material';
-import AppBarBar from './components/AppBarBar';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css'; // Import Swiper styles
-import Footer from './components/Footer';
-import UpDown from './components/UpDown';
+import React, { useEffect, useState } from "react";
+import {
+  Box,
+  Typography,
+  Button,
+  Container,
+  Paper,
+  CssBaseline,
+} from "@mui/material";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Autoplay } from "swiper/modules";
+import AppBarBar from "./components/AppBarBar";
+import Footer from "./components/Footer";
+import UpDown from "./components/UpDown";
+import { ThemeProvider } from "@mui/material/styles";
+import { lightTheme, darkTheme } from "./components/Theme";
+import "swiper/css";
+import "swiper/css/autoplay";
 
 // Sample Product Data
 const products = [
   {
     id: 1,
-    name: 'Camera',
-    description: 'Black Fujifilm Dslr Camera',
-    price: '$29.99',
-    image: '/images/pexels-photo-90946.jpeg',
+    name: "Camera",
+    description: "Black Fujifilm Dslr Camera",
+    price: "$29.99",
+    image: "/images/pexels-photo-90946.jpeg",
   },
   {
     id: 2,
-    name: 'The Apple Set',
-    description: 'Apple Set containing the triple combo c:',
-    price: '$9999.99',
-    image: '/images/apple-iphone-smartphone-desk.jpg',
+    name: "The Apple Set",
+    description: "Apple Set containing the triple combo c:",
+    price: "$9999.99",
+    image: "/images/apple-iphone-smartphone-desk.jpg",
   },
   {
     id: 3,
-    name: 'Filler 1',
-    description: 'Filler 1',
-    price: '',
-    image: '/images/default-image.jpg',
+    name: "Keyboard",
+    description: "Super Cheap Keyboard",
+    price: "$100.00",
+    image: "/images/keyboard.webp",
   },
   {
     id: 4,
-    name: 'Filler 2',
-    description: 'Filler 2',
-    price: '',
-    image: '/images/default-image.jpg',
+    name: "Headphones",
+    description: "Lates headphones from the Z Company",
+    price: "$599.00",
+    image: "/images/headphones.webp",
   },
 ];
 
-export default function Home() {
+export default function Home({ Component, pageProps }: any) {
+  const [isDarkMode, setIsDarkMode] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
+
+  // Toggle Theme
+  const toggleTheme = () => {
+    setIsDarkMode(!isDarkMode);
+  };
 
   // Wait for all images to load before displaying the carousel
   useEffect(() => {
@@ -60,27 +77,45 @@ export default function Home() {
   }, []);
 
   return (
-    <div>
-      <AppBarBar />
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <CssBaseline />
+      <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <Container sx={{ pt: 12 }}>
-
-        <Box sx={{ textAlign: 'center', mb: 6 }}>
-          <Typography variant="h3" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
+        <Box sx={{ textAlign: "center", mb: 6 }}>
+          <Typography
+            variant="h3"
+            sx={{
+              fontWeight: "bold",
+              color: isDarkMode ? "#ffffff" : "#363738",
+            }}
+          >
             Welcome to EG Store
           </Typography>
-          <Typography variant="h6" sx={{ color: '#555', mt: 2 }}>
-            Discover amazing products at unbeatable prices. Shop now and get the best deals!
+          <Typography
+            variant="h6"
+            sx={{ color: isDarkMode ? "#aaaaaa" : "#555", mt: 2 }}
+          >
+            Discover amazing products at unbeatable prices. Shop now and get the
+            best deals!
           </Typography>
         </Box>
 
         {/* Featured Products - Carousel */}
-        <Typography variant="h4" sx={{ textAlign: 'center', mb: 4, color: '#1976d2' }}>
+        <Typography
+          variant="h4"
+          sx={{
+            textAlign: "center",
+            mb: 4,
+            color: isDarkMode ? "#ffffff" : "#363738",
+          }}
+        >
           Featured Products
         </Typography>
 
         {/* Conditionally render carousel only after images are loaded */}
         {isImageLoaded ? (
           <Swiper
+            modules={[Autoplay]}
             spaceBetween={20}
             slidesPerView={1}
             breakpoints={{
@@ -99,21 +134,45 @@ export default function Home() {
           >
             {products.map((product) => (
               <SwiperSlide key={product.id}>
-                <Paper elevation={3} sx={{ p: 2, textAlign: 'center' }}>
+                <Paper
+                  elevation={3}
+                  sx={{
+                    p: 2,
+                    textAlign: "center",
+                    backgroundColor: isDarkMode ? "#424242" : "#ffffff",
+                    color: isDarkMode ? "#ffffff" : "#000000",
+                  }}
+                >
                   <img
                     src={product.image}
                     alt={product.name}
                     width="100%"
                     height="200"
-                    style={{ objectFit: 'cover' }}
+                    style={{ objectFit: "cover" }}
                   />
-                  <Typography variant="h6" sx={{ mt: 2 }}>
+                  <Typography
+                    variant="h6"
+                    sx={{ mt: 2, color: isDarkMode ? "#ffffff" : "#000000" }}
+                  >
                     {product.name}
                   </Typography>
-                  <Typography variant="body2" sx={{ color: '#555' }}>
+                  <Typography
+                    variant="body2"
+                    sx={{ color: isDarkMode ? "#aaaaaa" : "#555" }}
+                  >
                     {product.description}
                   </Typography>
-                  <Button variant="contained" color="primary" sx={{ mt: 2 }}>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      mt: 2,
+                      backgroundColor: isDarkMode ? "#555555" : "#363738",
+                      color: "white",
+                      "&:hover": {
+                        backgroundColor: isDarkMode ? "#777777" : "#505152",
+                      },
+                    }}
+                  >
                     Add to Cart
                   </Button>
                 </Paper>
@@ -121,13 +180,19 @@ export default function Home() {
             ))}
           </Swiper>
         ) : (
-          <Typography variant="h6" sx={{ textAlign: 'center' }}>
+          <Typography
+            variant="h6"
+            sx={{
+              textAlign: "center",
+              color: isDarkMode ? "#aaaaaa" : "#000",
+            }}
+          >
             Loading images...
           </Typography>
         )}
       </Container>
       <UpDown />
       <Footer />
-    </div>
+    </ThemeProvider>
   );
 }
