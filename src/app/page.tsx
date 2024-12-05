@@ -18,6 +18,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./components/Theme";
 import "swiper/css";
 import "swiper/css/autoplay";
+import { Analytics } from "@vercel/analytics/react";
 
 // Sample Product Data
 const products = [
@@ -78,6 +79,7 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <Analytics />
       <CssBaseline />
       <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <Container sx={{ pt: 12 }}>

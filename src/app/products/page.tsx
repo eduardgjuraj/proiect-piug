@@ -54,7 +54,7 @@ const mockProducts = [
     image: "/images/mouse.jpeg", // Fallback image
   },
   {
-    id: 4,
+    id: 6,
     name: "Fill Product",
     description: "Filler",
     price: "$11.11",
