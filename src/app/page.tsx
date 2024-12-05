@@ -18,7 +18,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./components/Theme";
 import "swiper/css";
 import "swiper/css/autoplay";
-import { Analytics } from "@vercel/analytics/react";
+import Script from "next/script";
 
 // Sample Product Data
 const products = [
@@ -79,7 +79,24 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <Analytics />
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-ML4L1C2P4M"
+        strategy="afterInteractive"
+      />
+      <Script
+        id="google-analytics"
+        strategy="afterInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'G-ML4L1C2P4M', {
+              page_path: window.location.pathname,
+            });
+          `,
+        }}
+      />
       <CssBaseline />
       <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <Container sx={{ pt: 12 }}>
