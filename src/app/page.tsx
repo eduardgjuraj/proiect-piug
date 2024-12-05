@@ -18,7 +18,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./components/Theme";
 import "swiper/css";
 import "swiper/css/autoplay";
-import Script from "next/script";
+import ReactGA from "react-ga4"; // Import react-ga4
 
 // Sample Product Data
 const products = [
@@ -53,6 +53,12 @@ const products = [
 ];
 
 export default function Home() {
+  // Initialize Google Analytics
+  useEffect(() => {
+    ReactGA.initialize("G-ML4L1C2P4M"); // Replace with your GA4 Measurement ID
+    ReactGA.send({ hitType: "pageview", page: "/", title: "Home Page" });
+  }, []);
+
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
@@ -79,24 +85,6 @@ export default function Home() {
 
   return (
     <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-ML4L1C2P4M"
-        strategy="afterInteractive"
-      />
-      <Script
-        id="google-analytics"
-        strategy="afterInteractive"
-        dangerouslySetInnerHTML={{
-          __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-ML4L1C2P4M', {
-              page_path: window.location.pathname,
-            });
-          `,
-        }}
-      />
       <CssBaseline />
       <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
       <Container sx={{ pt: 12 }}>
