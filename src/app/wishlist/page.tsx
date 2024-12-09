@@ -15,7 +15,7 @@ import AppBarBar from "../components/AppBarBar";
 import Footer from "../components/Footer";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/Theme";
-
+import { useThemeContext } from "../components/ThemeProviderWrapper";
 
 
 const wishlistItems = [
@@ -44,11 +44,8 @@ const wishlistItems = [
 ];
 
 export default function Wishlist() {
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
+  const { isDarkMode, toggleTheme } = useThemeContext();
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
 
   return (
     <>

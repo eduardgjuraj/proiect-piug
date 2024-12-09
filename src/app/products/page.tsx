@@ -16,7 +16,7 @@ import Footer from "../components/Footer";
 import UpDown from "../components/UpDown";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/Theme";
-
+import { useThemeContext } from "../components/ThemeProviderWrapper";
 
 const mockProducts = [
   {
@@ -64,11 +64,7 @@ const mockProducts = [
 ];
 
 export default function Products() {
-  const [isDarkMode, setIsDarkMode] = React.useState(false);
-
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { isDarkMode, toggleTheme } = useThemeContext();
 
   return (
     <>

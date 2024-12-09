@@ -21,13 +21,14 @@ export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false); // Track if the theme has been loaded
 
-  // Load the theme from localStorage on mount
   useEffect(() => {
     const savedTheme = localStorage.getItem("isDarkMode");
     if (savedTheme !== null) {
       setIsDarkMode(savedTheme === "true");
     }
+    setIsLoaded(true); // Mark as loaded once the theme is initialized
   }, []);
 
   const toggleTheme = () => {
@@ -37,6 +38,33 @@ export const ThemeProviderWrapper: React.FC<{ children: React.ReactNode }> = ({
       return newTheme;
     });
   };
+
+  // Apply a fallback background color during loading
+  useEffect(() => {
+    if (!isLoaded) {
+      document.body.style.backgroundColor = isDarkMode ? "#121212" : "#ffffff";
+    } else {
+      document.body.style.backgroundColor = "";
+    }
+  }, [isLoaded, isDarkMode]);
+
+  if (!isLoaded) {
+    return (
+      
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: isDarkMode ? "#121212" : "#121212",
+          color: isDarkMode ? "#121212" : "#121212",
+        }}
+      >
+        <div className="spinner" />
+      </div>
+    );
+  }
 
   return (
     <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>

@@ -18,7 +18,7 @@ import AppBarBar from "../components/AppBarBar";
 import Footer from "../components/Footer";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/Theme";
-
+import { useThemeContext } from "../components/ThemeProviderWrapper";
 
 const Contact = () => {
   const [formData, setFormData] = useState({
@@ -28,11 +28,9 @@ const Contact = () => {
   });
 
   const [openDialog, setOpenDialog] = useState(false); // Dialog visibility state
-  const [isDarkMode, setIsDarkMode] = useState(false); // Theme toggle state
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  const { isDarkMode, toggleTheme } = useThemeContext();
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;

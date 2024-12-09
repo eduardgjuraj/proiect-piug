@@ -25,7 +25,9 @@ import {
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import SearchBar from "./SearchBar";
+
 
 interface ResponsiveAppBarProps {
   isDarkMode: boolean;
@@ -48,6 +50,8 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
   const theme = useTheme();
   const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
+  const router = useRouter();
+
   const handleOpenDialog = () => {
     setOpenDialog(true);
   };
@@ -62,7 +66,12 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Search query:", searchQuery);
+  if (searchQuery.trim()) {
+    // Redirect to a search results page with the query as a parameter
+    router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
+  } else {
+    alert("Please enter a search term.");
+  }
   };
 
   const toggleDrawer = (open: boolean) => () => {
@@ -179,12 +188,41 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
 
       {/* Drawer for Small Screens */}
       <Drawer anchor="left" open={isDrawerOpen} onClose={toggleDrawer(false)}>
-        <Box sx={{ width: 250 }} role="presentation">
+        <Box sx={{ width: 250, p: 2 }} role="presentation">
+          {/* Search Bar */}
+          <Box sx={{ mb: 2 }}>
+            <form onSubmit={handleSearchSubmit}>
+              <TextField
+                value={searchQuery}
+                onChange={handleSearchChange}
+                placeholder="Search..."
+                variant="outlined"
+                size="small"
+                fullWidth
+                sx={{
+                  backgroundColor: isDarkMode ? "#444" : "white",
+                  borderRadius: "4px",
+                }}
+              />
+            </form>
+          </Box>
+
+          {/* Menu Items */}
           <List>
             {pages.map((page) => (
               <ListItem key={page.name} disablePadding>
                 <ListItemButton href={page.path}>
-                  <ListItemText primary={page.name} />
+                  <ListItemText
+                    primary={page.name}
+                    sx={{
+                      color:
+                        pathname === page.path
+                          ? "#ff4081"
+                          : isDarkMode
+                          ? "white"
+                          : "black",
+                    }}
+                  />
                 </ListItemButton>
               </ListItem>
             ))}

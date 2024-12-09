@@ -18,7 +18,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./components/Theme";
 import "swiper/css";
 import "swiper/css/autoplay";
-
+import { useThemeContext } from "./components/ThemeProviderWrapper";
 
 // Sample Product Data
 const products = [
@@ -56,13 +56,10 @@ export default function Home() {
   
 
 
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const { isDarkMode, toggleTheme } = useThemeContext();
   const [isImageLoaded, setIsImageLoaded] = useState(false);
 
-  // Toggle Theme
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  
 
   // Wait for all images to load before displaying the carousel
   useEffect(() => {

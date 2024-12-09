@@ -13,19 +13,20 @@ import AppBarBar from "../components/AppBarBar";
 import Footer from "../components/Footer";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/Theme";
+import { useThemeContext } from "../components/ThemeProviderWrapper";
 
 export default function Account() {
   const [username, setUsername] = useState("JohnDoe");
   const [email, setEmail] = useState("john.doe@example.com");
   const [password, setPassword] = useState("password");
   const [isEditing, setIsEditing] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+
+  const { isDarkMode, toggleTheme } = useThemeContext();
+
 
   const isSmallScreen = useMediaQuery("(max-width:600px)"); // Detect small screens
 
-  const toggleTheme = () => {
-    setIsDarkMode(!isDarkMode);
-  };
+  
 
   const handleSubmit = () => {
     alert("Account information updated!");
