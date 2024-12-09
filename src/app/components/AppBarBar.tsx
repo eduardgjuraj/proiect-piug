@@ -26,7 +26,6 @@ import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useTheme } from "@mui/material/styles";
 import { usePathname, useRouter } from "next/navigation";
-import SearchBar from "./SearchBar";
 
 
 interface ResponsiveAppBarProps {
