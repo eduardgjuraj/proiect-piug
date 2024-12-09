@@ -18,7 +18,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./components/Theme";
 import "swiper/css";
 import "swiper/css/autoplay";
-import ReactGA from "react-ga4"; // Import react-ga4
+import Script from "next/script";
 
 // Sample Product Data
 const products = [
@@ -54,10 +54,7 @@ const products = [
 
 export default function Home() {
   // Initialize Google Analytics
-  useEffect(() => {
-    ReactGA.initialize("G-ML4L1C2P4M"); // Replace with your GA4 Measurement ID
-    ReactGA.send({ hitType: "pageview", page: "/", title: "Home Page" });
-  }, []);
+
 
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [isImageLoaded, setIsImageLoaded] = useState(false);
@@ -84,122 +81,140 @@ export default function Home() {
   }, []);
 
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <CssBaseline />
-      <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      <Container sx={{ pt: 12 }}>
-        <Box sx={{ textAlign: "center", mb: 6 }}>
+    <>
+      {/* Google Analytics Script */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-ML4L1C2P4M"
+        strategy="afterInteractive"
+      />
+      <Script id="ga4-setup" strategy="afterInteractive">
+        {`
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-ML4L1C2P4M', {
+        page_path: window.location.pathname,
+      });
+    `}
+      </Script>
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+
+        <CssBaseline />
+        <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        <Container sx={{ pt: 12 }}>
+          <Box sx={{ textAlign: "center", mb: 6 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                fontWeight: "bold",
+                color: isDarkMode ? "#ffffff" : "#363738",
+              }}
+            >
+              Welcome to EG Store
+            </Typography>
+            <Typography
+              variant="h6"
+              sx={{ color: isDarkMode ? "#aaaaaa" : "#555", mt: 2 }}
+            >
+              Discover amazing products at unbeatable prices. Shop now and get the
+              best deals!
+            </Typography>
+          </Box>
+
+          {/* Featured Products - Carousel */}
           <Typography
-            variant="h3"
+            variant="h4"
             sx={{
-              fontWeight: "bold",
+              textAlign: "center",
+              mb: 4,
               color: isDarkMode ? "#ffffff" : "#363738",
             }}
           >
-            Welcome to EG Store
+            Featured Products
           </Typography>
-          <Typography
-            variant="h6"
-            sx={{ color: isDarkMode ? "#aaaaaa" : "#555", mt: 2 }}
-          >
-            Discover amazing products at unbeatable prices. Shop now and get the
-            best deals!
-          </Typography>
-        </Box>
 
-        {/* Featured Products - Carousel */}
-        <Typography
-          variant="h4"
-          sx={{
-            textAlign: "center",
-            mb: 4,
-            color: isDarkMode ? "#ffffff" : "#363738",
-          }}
-        >
-          Featured Products
-        </Typography>
-
-        {/* Conditionally render carousel only after images are loaded */}
-        {isImageLoaded ? (
-          <Swiper
-            modules={[Autoplay]}
-            spaceBetween={20}
-            slidesPerView={1}
-            breakpoints={{
-              600: {
-                slidesPerView: 2,
-              },
-              900: {
-                slidesPerView: 3,
-              },
-            }}
-            loop={true}
-            autoplay={{
-              delay: 2500,
-              disableOnInteraction: false,
-            }}
-          >
-            {products.map((product) => (
-              <SwiperSlide key={product.id}>
-                <Paper
-                  elevation={3}
-                  sx={{
-                    p: 2,
-                    textAlign: "center",
-                    backgroundColor: isDarkMode ? "#424242" : "#ffffff",
-                    color: isDarkMode ? "#ffffff" : "#000000",
-                  }}
-                >
-                  <img
-                    src={product.image}
-                    alt={product.name}
-                    width="100%"
-                    height="200"
-                    style={{ objectFit: "cover" }}
-                  />
-                  <Typography
-                    variant="h6"
-                    sx={{ mt: 2, color: isDarkMode ? "#ffffff" : "#000000" }}
-                  >
-                    {product.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    sx={{ color: isDarkMode ? "#aaaaaa" : "#555" }}
-                  >
-                    {product.description}
-                  </Typography>
-                  <Button
-                    variant="contained"
+          {/* Conditionally render carousel only after images are loaded */}
+          {isImageLoaded ? (
+            <Swiper
+              modules={[Autoplay]}
+              spaceBetween={20}
+              slidesPerView={1}
+              breakpoints={{
+                600: {
+                  slidesPerView: 2,
+                },
+                900: {
+                  slidesPerView: 3,
+                },
+              }}
+              loop={true}
+              autoplay={{
+                delay: 2500,
+                disableOnInteraction: false,
+              }}
+            >
+              {products.map((product) => (
+                <SwiperSlide key={product.id}>
+                  <Paper
+                    elevation={3}
                     sx={{
-                      mt: 2,
-                      backgroundColor: isDarkMode ? "#555555" : "#363738",
-                      color: "white",
-                      "&:hover": {
-                        backgroundColor: isDarkMode ? "#777777" : "#505152",
-                      },
+                      p: 2,
+                      textAlign: "center",
+                      backgroundColor: isDarkMode ? "#424242" : "#ffffff",
+                      color: isDarkMode ? "#ffffff" : "#000000",
                     }}
                   >
-                    Add to Cart
-                  </Button>
-                </Paper>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        ) : (
-          <Typography
-            variant="h6"
-            sx={{
-              textAlign: "center",
-              color: isDarkMode ? "#aaaaaa" : "#000",
-            }}
-          >
-            Loading images...
-          </Typography>
-        )}
-      </Container>
-      <UpDown />
-      <Footer />
-    </ThemeProvider>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      width="100%"
+                      height="200"
+                      style={{ objectFit: "cover" }}
+                    />
+                    <Typography
+                      variant="h6"
+                      sx={{ mt: 2, color: isDarkMode ? "#ffffff" : "#000000" }}
+                    >
+                      {product.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      sx={{ color: isDarkMode ? "#aaaaaa" : "#555" }}
+                    >
+                      {product.description}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      sx={{
+                        mt: 2,
+                        backgroundColor: isDarkMode ? "#555555" : "#363738",
+                        color: "white",
+                        "&:hover": {
+                          backgroundColor: isDarkMode ? "#777777" : "#505152",
+                        },
+                      }}
+                    >
+                      Add to Cart
+                    </Button>
+                  </Paper>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          ) : (
+            <Typography
+              variant="h6"
+              sx={{
+                textAlign: "center",
+                color: isDarkMode ? "#aaaaaa" : "#000",
+              }}
+            >
+              Loading images...
+            </Typography>
+          )}
+        </Container>
+        <UpDown />
+        <Footer />
+      </ThemeProvider>
+    </>
   );
 }

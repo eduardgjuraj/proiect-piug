@@ -16,6 +16,8 @@ import Footer from "../components/Footer";
 import UpDown from "../components/UpDown";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/Theme";
+import Script from "next/script"
+
 
 const mockProducts = [
   {
@@ -70,78 +72,95 @@ export default function Products() {
   };
 
   return (
-    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
-      <CssBaseline />
-      <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
-      <Box sx={{ flexGrow: 1, p: 12 }}>
-        <Typography
-          variant="h4"
-          sx={{
-            mb: 3,
-            textAlign: "center",
-            color: isDarkMode ? "#f5f5f5" : "#123133",
-          }}
-        >
-          Products
-        </Typography>
-        <Grid container spacing={3}>
-          {mockProducts.map((product) => (
-            <Grid item xs={12} sm={6} md={4} key={product.id}>
-              <Card
-                sx={{
-                  backgroundColor: isDarkMode ? "#424242" : "#ffffff",
-                  color: isDarkMode ? "#f5f5f5" : "#000000",
-                }}
-              >
-                {/* Use a fallback image if no image is provided */}
-                <CardMedia
-                  component="img"
-                  height="250"
-                  image={product.image || "/images/default-image.jpg"} // Check for image path and fallback
-                  alt={product.name}
-                />
-                <CardContent>
-                  <Typography variant="h6" component="div">
-                    {product.name}
-                  </Typography>
-                  <Typography
-                    variant="body2"
-                    color="text.secondary"
-                    sx={{ mb: 1 }}
-                  >
-                    {product.description}
-                  </Typography>
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontWeight: "bold",
-                      color: isDarkMode ? "#bbbbbb" : "#000000",
-                    }}
-                  >
-                    {product.price}
-                  </Typography>
-                </CardContent>
-                <Button
-                  variant="contained"
+    <>
+      {/* Google Analytics Script */}
+      <Script
+        src="https://www.googletagmanager.com/gtag/js?id=G-ML4L1C2P4M"
+        strategy="afterInteractive"
+      />
+      <Script id="ga4-setup" strategy="afterInteractive">
+        {`
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-ML4L1C2P4M', {
+    page_path: window.location.pathname,
+  });
+`}
+      </Script>
+      <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+        <CssBaseline />
+        <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
+        <Box sx={{ flexGrow: 1, p: 12 }}>
+          <Typography
+            variant="h4"
+            sx={{
+              mb: 3,
+              textAlign: "center",
+              color: isDarkMode ? "#f5f5f5" : "#123133",
+            }}
+          >
+            Products
+          </Typography>
+          <Grid container spacing={3}>
+            {mockProducts.map((product) => (
+              <Grid item xs={12} sm={6} md={4} key={product.id}>
+                <Card
                   sx={{
-                    m: 2,
-                    color: isDarkMode ? "#000000" : "#f6f9f6",
-                    bgcolor: isDarkMode ? "#bbbbbb" : "#123133",
-                    "&:hover": {
-                      backgroundColor: isDarkMode ? "#888888" : "#345345",
-                    },
+                    backgroundColor: isDarkMode ? "#424242" : "#ffffff",
+                    color: isDarkMode ? "#f5f5f5" : "#000000",
                   }}
-                  onClick={() => alert(`Added ${product.name} to cart!`)}
                 >
-                  Add to Cart
-                </Button>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
-      <UpDown />
-      <Footer />
-    </ThemeProvider>
+                  {/* Use a fallback image if no image is provided */}
+                  <CardMedia
+                    component="img"
+                    height="250"
+                    image={product.image || "/images/default-image.jpg"} // Check for image path and fallback
+                    alt={product.name}
+                  />
+                  <CardContent>
+                    <Typography variant="h6" component="div">
+                      {product.name}
+                    </Typography>
+                    <Typography
+                      variant="body2"
+                      color="text.secondary"
+                      sx={{ mb: 1 }}
+                    >
+                      {product.description}
+                    </Typography>
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontWeight: "bold",
+                        color: isDarkMode ? "#bbbbbb" : "#000000",
+                      }}
+                    >
+                      {product.price}
+                    </Typography>
+                  </CardContent>
+                  <Button
+                    variant="contained"
+                    sx={{
+                      m: 2,
+                      color: isDarkMode ? "#000000" : "#f6f9f6",
+                      bgcolor: isDarkMode ? "#bbbbbb" : "#123133",
+                      "&:hover": {
+                        backgroundColor: isDarkMode ? "#888888" : "#345345",
+                      },
+                    }}
+                    onClick={() => alert(`Added ${product.name} to cart!`)}
+                  >
+                    Add to Cart
+                  </Button>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
+        <UpDown />
+        <Footer />
+      </ThemeProvider>
+    </>
   );
 }

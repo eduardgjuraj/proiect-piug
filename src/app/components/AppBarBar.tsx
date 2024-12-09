@@ -15,8 +15,16 @@ import {
   DialogContent,
   DialogTitle,
   Switch,
+  useMediaQuery,
+  Drawer,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
 } from "@mui/material";
 import HelpOutlineIcon from "@mui/icons-material/HelpOutline";
+import MenuIcon from "@mui/icons-material/Menu";
+import { useTheme } from "@mui/material/styles";
 import { usePathname } from "next/navigation";
 
 interface ResponsiveAppBarProps {
@@ -33,9 +41,12 @@ const pages = [
 ];
 
 function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
-  const pathname = usePathname(); // Get the current pathname
+  const pathname = usePathname();
   const [openDialog, setOpenDialog] = React.useState(false);
-  const [searchQuery, setSearchQuery] = React.useState(""); // Search query
+  const [searchQuery, setSearchQuery] = React.useState("");
+  const [isDrawerOpen, setIsDrawerOpen] = React.useState(false);
+  const theme = useTheme();
+  const isSmallScreen = useMediaQuery(theme.breakpoints.down("md"));
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -54,108 +65,134 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
     console.log("Search query:", searchQuery);
   };
 
+  const toggleDrawer = (open: boolean) => () => {
+    setIsDrawerOpen(open);
+  };
+
   return (
-    <AppBar
-      position="fixed"
-      sx={{
-        bgcolor: isDarkMode ? "rgba(0, 0, 0, 0.8)" : "rgba(255, 255, 255, 0.8)",
-        color: isDarkMode ? "white" : "black",
-        boxShadow: 1,
-        borderRadius: "1px",
-        backdropFilter: "blur(8px)",
-        height: "56px",
-        marginTop: "10px",
-      }}
-    >
-      <Container maxWidth="lg">
-        <Toolbar
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            padding: "0 8px",
-            minHeight: "56px",
-          }}
-        >
-          {/* Logo */}
-          <Box sx={{ display: "flex", alignItems: "center" }}>
+    <>
+      <AppBar
+        position="fixed"
+        sx={{
+          bgcolor: isDarkMode ? "rgba(0, 0, 0, 0.8)" : "rgba(255, 255, 255, 0.8)",
+          color: isDarkMode ? "white" : "black",
+          boxShadow: 1,
+          borderRadius: "1px",
+          backdropFilter: "blur(8px)",
+        }}
+      >
+        <Container maxWidth="lg">
+          <Toolbar
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              padding: "0 8px",
+            }}
+          >
+            {/* Logo */}
             <Button
-              sx={{ color: isDarkMode ? "white" : "black", fontWeight: "bold" }}
+              sx={{
+                color: isDarkMode ? "white" : "black",
+                fontWeight: "bold",
+                textTransform: "none",
+              }}
               href="/"
             >
               EG
             </Button>
-          </Box>
 
-          {/* Navigation Buttons */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
-            {pages.map((page) => (
-              <Button
-                key={page.name}
-                href={page.path}
-                sx={{
-                  color:
-                    pathname === page.path
-                      ? "#ff4081"
-                      : isDarkMode
-                      ? "white"
-                      : "black",
-                  fontWeight: pathname === page.path ? "bold" : "normal",
-                  textTransform: "none",
-                  "&:hover": {
-                    color: "#ff4081",
-                  },
-                }}
+            {/* Navigation Buttons or Menu Icon */}
+            {isSmallScreen ? (
+              <IconButton
+                sx={{ color: isDarkMode ? "white" : "black" }}
+                onClick={toggleDrawer(true)}
               >
-                {page.name}
-              </Button>
-            ))}
-          </Box>
+                <MenuIcon />
+              </IconButton>
+            ) : (
+              <Box sx={{ display: "flex", alignItems: "center", gap: 3 }}>
+                {pages.map((page) => (
+                  <Button
+                    key={page.name}
+                    href={page.path}
+                    sx={{
+                      color:
+                        pathname === page.path
+                          ? "#ff4081"
+                          : isDarkMode
+                          ? "white"
+                          : "black",
+                      fontWeight: pathname === page.path ? "bold" : "normal",
+                      textTransform: "none",
+                      "&:hover": {
+                        color: "#ff4081",
+                      },
+                    }}
+                  >
+                    {page.name}
+                  </Button>
+                ))}
+              </Box>
+            )}
 
-          {/* Search Bar */}
-          <Box sx={{ flexGrow: 0 }}>
-            <form onSubmit={handleSearchSubmit}>
-              <TextField
-                value={searchQuery}
-                onChange={handleSearchChange}
-                placeholder="Search..."
-                variant="outlined"
-                size="small"
-                sx={{
-                  backgroundColor: isDarkMode ? "#444" : "white",
-                  borderRadius: "4px",
-                  marginLeft: "8px",
-                  width: "200px",
-                  transition: "width 0.3s ease",
-                  "&:focus-within": {
-                    width: "250px",
-                  },
-                }}
-              />
-            </form>
-          </Box>
+            {/* Search Bar */}
+            {!isSmallScreen && (
+              <Box>
+                <form onSubmit={handleSearchSubmit}>
+                  <TextField
+                    value={searchQuery}
+                    onChange={handleSearchChange}
+                    placeholder="Search..."
+                    variant="outlined"
+                    size="small"
+                    sx={{
+                      backgroundColor: isDarkMode ? "#444" : "white",
+                      borderRadius: "4px",
+                      width: "200px",
+                    }}
+                  />
+                </form>
+              </Box>
+            )}
 
-          {/* Theme Switch */}
-          <Box>
-            <Typography
-              variant="body2"
-              sx={{ color: isDarkMode ? "white" : "black", marginRight: 1 }}
+            {/* Theme Switch */}
+            <Box>
+              <Typography
+                variant="body2"
+                sx={{ color: isDarkMode ? "white" : "black", marginRight: 1 }}
+              >
+                {isDarkMode ? "Dark" : "Light"} Mode
+              </Typography>
+              <Switch checked={isDarkMode} onChange={toggleTheme} />
+            </Box>
+
+            {/* Help Icon Button */}
+            <IconButton
+              sx={{ color: isDarkMode ? "white" : "black" }}
+              onClick={handleOpenDialog}
             >
-              {isDarkMode ? "Dark" : "Light"} Mode
-            </Typography>
-            <Switch checked={isDarkMode} onChange={toggleTheme} />
-          </Box>
+              <HelpOutlineIcon />
+            </IconButton>
+          </Toolbar>
+        </Container>
+      </AppBar>
 
-          {/* Help Icon Button */}
-          <IconButton
-            sx={{ color: isDarkMode ? "white" : "black" }}
-            onClick={handleOpenDialog}
-          >
-            <HelpOutlineIcon />
-          </IconButton>
-        </Toolbar>
-      </Container>
+      {/* Drawer for Small Screens */}
+      <Drawer anchor="left" open={isDrawerOpen} onClose={toggleDrawer(false)}>
+        <Box sx={{ width: 250 }} role="presentation">
+          <List>
+            {pages.map((page) => (
+              <ListItem key={page.name} disablePadding>
+                <ListItemButton href={page.path}>
+                  <ListItemText primary={page.name} />
+                </ListItemButton>
+              </ListItem>
+            ))}
+          </List>
+        </Box>
+      </Drawer>
 
-      {/* Dialog (Custom Alert) */}
+      {/* Dialog */}
       <Dialog open={openDialog} onClose={handleCloseDialog}>
         <DialogTitle>Help</DialogTitle>
         <DialogContent>
@@ -179,7 +216,7 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
           </Button>
         </DialogActions>
       </Dialog>
-    </AppBar>
+    </>
   );
 }
 
