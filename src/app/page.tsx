@@ -18,7 +18,7 @@ import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "./components/Theme";
 import "swiper/css";
 import "swiper/css/autoplay";
-import Script from "next/script";
+
 
 // Sample Product Data
 const products = [
@@ -53,7 +53,7 @@ const products = [
 ];
 
 export default function Home() {
-  // Initialize Google Analytics
+  
 
 
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -82,21 +82,7 @@ export default function Home() {
 
   return (
     <>
-      {/* Google Analytics Script */}
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-ML4L1C2P4M"
-        strategy="afterInteractive"
-      />
-      <Script id="ga4-setup" strategy="afterInteractive">
-        {`
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-ML4L1C2P4M', {
-        page_path: window.location.pathname,
-      });
-    `}
-      </Script>
+      
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
 
         <CssBaseline />

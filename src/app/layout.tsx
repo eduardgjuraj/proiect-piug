@@ -1,6 +1,7 @@
 "use client";
 import "./globals.css"; // Import your global styles
 import { ThemeProviderWrapper } from "./components/ThemeProviderWrapper";
+import GoogleAnalytics from './components/GoogleAnalytics';
 
 export default function RootLayout({
   children,
@@ -11,6 +12,7 @@ export default function RootLayout({
     <html lang="en">
       <title> EG STORE </title>
       <body>
+        <GoogleAnalytics />
         <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
       </body>
     </html>

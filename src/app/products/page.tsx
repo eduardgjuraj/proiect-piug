@@ -16,7 +16,6 @@ import Footer from "../components/Footer";
 import UpDown from "../components/UpDown";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/Theme";
-import Script from "next/script"
 
 
 const mockProducts = [
@@ -73,21 +72,7 @@ export default function Products() {
 
   return (
     <>
-      {/* Google Analytics Script */}
-      <Script
-        src="https://www.googletagmanager.com/gtag/js?id=G-ML4L1C2P4M"
-        strategy="afterInteractive"
-      />
-      <Script id="ga4-setup" strategy="afterInteractive">
-        {`
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-ML4L1C2P4M', {
-    page_path: window.location.pathname,
-  });
-`}
-      </Script>
+      
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <CssBaseline />
         <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
