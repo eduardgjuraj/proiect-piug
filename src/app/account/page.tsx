@@ -26,7 +26,7 @@ export default function Account() {
 
   const isSmallScreen = useMediaQuery("(max-width:600px)"); // Detect small screens
 
-  
+
 
   const handleSubmit = () => {
     alert("Account information updated!");
@@ -78,7 +78,19 @@ export default function Account() {
                 "& .MuiInputLabel-root": {
                   color: isDarkMode ? "#bbbbbb" : "#000000",
                 },
-              }}
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: isEditing ? (isDarkMode ? "#888888" : "#cccccc") : "#e0e0e0", // Default border
+                  },
+                  "&:hover fieldset": {
+                    borderColor: isEditing ? (isDarkMode ? "#aaaaaa" : "#888888") : "#e0e0e0", // Hover border
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#ff4081", // Custom border color when focused
+                  },
+                }
+              }
+              }
             />
 
             <TextField
@@ -93,6 +105,17 @@ export default function Account() {
                 "& .MuiInputLabel-root": {
                   color: isDarkMode ? "#bbbbbb" : "#000000",
                 },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: isEditing ? (isDarkMode ? "#888888" : "#cccccc") : "#e0e0e0", // Default border
+                  },
+                  "&:hover fieldset": {
+                    borderColor: isEditing ? (isDarkMode ? "#aaaaaa" : "#888888") : "#e0e0e0", // Hover border
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#ff4081", // Custom border color when focused
+                  },
+                }
               }}
             />
 
@@ -108,6 +131,17 @@ export default function Account() {
                 "& .MuiInputLabel-root": {
                   color: isDarkMode ? "#bbbbbb" : "#000000",
                 },
+                "& .MuiOutlinedInput-root": {
+                  "& fieldset": {
+                    borderColor: isEditing ? (isDarkMode ? "#888888" : "#cccccc") : "#e0e0e0", // Default border
+                  },
+                  "&:hover fieldset": {
+                    borderColor: isEditing ? (isDarkMode ? "#aaaaaa" : "#888888") : "#e0e0e0", // Hover border
+                  },
+                  "&.Mui-focused fieldset": {
+                    borderColor: "#ff4081", // Custom border color when focused
+                  },
+                }
               }}
               type="password"
             />

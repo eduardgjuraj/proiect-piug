@@ -93,6 +93,17 @@ const Contact = () => {
                     }}
                     sx={{
                       input: { color: isDarkMode ? "#f5f5f5" : "#000000" },
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: isDarkMode ? "#888888" : "#cccccc", // Default border color
+                        },
+                        "&:hover fieldset": {
+                          borderColor: isDarkMode ? "#aaaaaa" : "#888888", // Hover border color
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#ff4081", // Border color when focused
+                        },
+                      },
                     }}
                   />
                 </Grid>
@@ -113,6 +124,17 @@ const Contact = () => {
                     }}
                     sx={{
                       input: { color: isDarkMode ? "#f5f5f5" : "#000000" },
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: isDarkMode ? "#888888" : "#cccccc", // Default border color
+                        },
+                        "&:hover fieldset": {
+                          borderColor: isDarkMode ? "#aaaaaa" : "#888888", // Hover border color
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#ff4081", // Border color when focused
+                        },
+                      },
                     }}
                   />
                 </Grid>
@@ -134,6 +156,17 @@ const Contact = () => {
                     }}
                     sx={{
                       textarea: { color: isDarkMode ? "#f5f5f5" : "#000000" },
+                      "& .MuiOutlinedInput-root": {
+                        "& fieldset": {
+                          borderColor: isDarkMode ? "#888888" : "#cccccc", // Default border color
+                        },
+                        "&:hover fieldset": {
+                          borderColor: isDarkMode ? "#aaaaaa" : "#888888", // Hover border color
+                        },
+                        "&.Mui-focused fieldset": {
+                          borderColor: "#ff4081", // Border color when focused
+                        },
+                      },
                     }}
                   />
                 </Grid>

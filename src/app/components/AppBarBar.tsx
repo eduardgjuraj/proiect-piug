@@ -65,12 +65,12 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
 
   const handleSearchSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-  if (searchQuery.trim()) {
-    // Redirect to a search results page with the query as a parameter
-    router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
-  } else {
-    alert("Please enter a search term.");
-  }
+    if (searchQuery.trim()) {
+      // Redirect to a search results page with the query as a parameter
+      router.push(`/search?query=${encodeURIComponent(searchQuery)}`);
+    } else {
+      alert("Please enter a search term.");
+    }
   };
 
   const toggleDrawer = (open: boolean) => () => {
@@ -128,8 +128,8 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
                         pathname === page.path
                           ? "#ff4081"
                           : isDarkMode
-                          ? "white"
-                          : "black",
+                            ? "white"
+                            : "black",
                       fontWeight: pathname === page.path ? "bold" : "normal",
                       textTransform: "none",
                       "&:hover": {
@@ -154,9 +154,17 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
                     variant="outlined"
                     size="small"
                     sx={{
-                      backgroundColor: isDarkMode ? "#444" : "white",
-                      borderRadius: "4px",
-                      width: "200px",
+                      '& .MuiOutlinedInput-root': {
+                        '& fieldset': {
+                          borderColor: isDarkMode ? '#444' : '#ccc', // Default border color
+                        },
+                        '&:hover fieldset': {
+                          borderColor: isDarkMode ? '#888' : '#aaa', // Hover border color
+                        },
+                        '&.Mui-focused fieldset': {
+                          borderColor: '#ff4081', // Border color when focused
+                        },
+                      },
                     }}
                   />
                 </form>
@@ -171,7 +179,18 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
               >
                 {isDarkMode ? "Dark" : "Light"} Mode
               </Typography>
-              <Switch checked={isDarkMode} onChange={toggleTheme} />
+              <Switch
+                checked={isDarkMode}
+                onChange={toggleTheme}
+                sx={{
+                  '& .MuiSwitch-switchBase.Mui-checked': {
+                    color: '#ff4081',
+                  },
+                  '& .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track': {
+                    backgroundColor: '#ff4081',
+                  },
+                }}
+              />
             </Box>
 
             {/* Help Icon Button */}
@@ -201,6 +220,17 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
                 sx={{
                   backgroundColor: isDarkMode ? "#444" : "white",
                   borderRadius: "4px",
+                  '& .MuiOutlinedInput-root': {
+                    '& fieldset': {
+                      borderColor: isDarkMode ? '#444' : '#ccc', // Default border color
+                    },
+                    '&:hover fieldset': {
+                      borderColor: isDarkMode ? '#888' : '#aaa', // Hover border color
+                    },
+                    '&.Mui-focused fieldset': {
+                      borderColor: '#ff4081', // Border color when focused
+                    },
+                  },
                 }}
               />
             </form>
@@ -218,8 +248,8 @@ function ResponsiveAppBar({ isDarkMode, toggleTheme }: ResponsiveAppBarProps) {
                         pathname === page.path
                           ? "#ff4081"
                           : isDarkMode
-                          ? "white"
-                          : "black",
+                            ? "white"
+                            : "black",
                     }}
                   />
                 </ListItemButton>
