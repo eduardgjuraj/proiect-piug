@@ -17,58 +17,74 @@ import UpDown from "../components/UpDown";
 import { ThemeProvider } from "@mui/material/styles";
 import { lightTheme, darkTheme } from "../components/Theme";
 import { useThemeContext } from "../components/ThemeProviderWrapper";
+import { useCart } from "../components/CartContext";
+
+interface Product {
+  id: number;
+  name: string;
+  price: number;
+  description: string;
+  image: string;
+}
 
 const mockProducts = [
   {
     id: 1,
     name: "Camera",
     description: "Black Fujifilm Dslr Camera",
-    price: "$299.99",
-    image: "/images/pexels-photo-90946.jpeg", // Correct image path
+    price: 299.99, // Change to number for easier calculation
+    image: "/images/pexels-photo-90946.jpeg",
   },
   {
     id: 2,
     name: "Apple Combo",
     description: "Apple Combo featuring all items from Apple c:",
-    price: "$4999.99",
-    image: "/images/apple-iphone-smartphone-desk.jpg", // Example of fallback image
+    price: 4999.99,
+    image: "/images/apple-iphone-smartphone-desk.jpg",
   },
   {
     id: 3,
-    name: "Fill product",
-    description: "Filler",
-    price: "$11.11",
-    image: "/images/ryzen_processor.avif", // Fallback image
+    name: "Processor",
+    description: "AMD Ryzen Processor",
+    price: 250.0,
+    image: "/images/ryzen_processor.avif",
   },
   {
     id: 4,
-    name: "Fill Product",
-    description: "Filler",
-    price: "$11.11",
-    image: "/images/headphones.webp", // Fallback image
+    name: "Headphones",
+    description: "Wireless Headphones",
+    price: 99.99,
+    image: "/images/headphones.webp",
   },
   {
     id: 5,
-    name: "Fill product",
-    description: "Filler",
-    price: "$11.11",
-    image: "/images/mouse.jpeg", // Fallback image
+    name: "Mouse",
+    description: "Ergonomic Mouse",
+    price: 49.99,
+    image: "/images/mouse.jpeg",
   },
   {
     id: 6,
-    name: "Fill Product",
-    description: "Filler",
-    price: "$11.11",
-    image: "/images/keyboard.webp", // Fallback image
+    name: "Keyboard",
+    description: "Mechanical Keyboard",
+    price: 89.99,
+    image: "/images/keyboard.webp",
   },
 ];
+
+
 
 export default function Products() {
   const { isDarkMode, toggleTheme } = useThemeContext();
 
+  const { addToCart } = useCart();
+  const handleAddToCart = (product: Product) => {
+    addToCart(product); // This updates both the context and localStorage
+    alert(`${product.name} has been added to the cart!`);
+  };
+
   return (
     <>
-      
       <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
         <CssBaseline />
         <AppBarBar isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
@@ -92,11 +108,10 @@ export default function Products() {
                     color: isDarkMode ? "#f5f5f5" : "#000000",
                   }}
                 >
-                  {/* Use a fallback image if no image is provided */}
                   <CardMedia
                     component="img"
                     height="250"
-                    image={product.image || "/images/default-image.jpg"} // Check for image path and fallback
+                    image={product.image || "/images/default-image.jpg"} // Fallback image
                     alt={product.name}
                   />
                   <CardContent>
@@ -117,7 +132,7 @@ export default function Products() {
                         color: isDarkMode ? "#bbbbbb" : "#000000",
                       }}
                     >
-                      {product.price}
+                      ${product.price.toFixed(2)} {/* Ensure consistent price formatting */}
                     </Typography>
                   </CardContent>
                   <Button
@@ -130,7 +145,7 @@ export default function Products() {
                         backgroundColor: isDarkMode ? "#888888" : "#345345",
                       },
                     }}
-                    onClick={() => alert(`Added ${product.name} to cart!`)}
+                    onClick={() => handleAddToCart(product)} // Add to cart
                   >
                     Add to Cart
                   </Button>
